@@ -2,7 +2,9 @@ package com.example.GarageDesk.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.GarageDesk.entity.Vehicle;
 import com.example.GarageDesk.repository.VehicleRepository;
@@ -26,11 +28,14 @@ public class VehicleService {
         return vehicleRepository.findAll();
     }
 
-    // READ - vehicle by ID
+    // READ - by ID
     public Vehicle getVehicleById(Long id) {
+
         return vehicleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
-                        "Vehicle not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Vehicle not found with id: " + id
+                ));
     }
 
     // UPDATE
@@ -39,19 +44,24 @@ public class VehicleService {
         Vehicle existingVehicle = getVehicleById(id);
 
         existingVehicle.setRegistrationNumber(
-                updatedVehicle.getRegistrationNumber());
+                updatedVehicle.getRegistrationNumber()
+        );
 
         existingVehicle.setOwnerName(
-                updatedVehicle.getOwnerName());
+                updatedVehicle.getOwnerName()
+        );
 
         existingVehicle.setPhoneNumber(
-                updatedVehicle.getPhoneNumber());
+                updatedVehicle.getPhoneNumber()
+        );
 
         existingVehicle.setModel(
-                updatedVehicle.getModel());
+                updatedVehicle.getModel()
+        );
 
         existingVehicle.setVehicleType(
-                updatedVehicle.getVehicleType());
+                updatedVehicle.getVehicleType()
+        );
 
         return vehicleRepository.save(existingVehicle);
     }
@@ -60,8 +70,10 @@ public class VehicleService {
     public void deleteVehicle(Long id) {
 
         if (!vehicleRepository.existsById(id)) {
-            throw new RuntimeException(
-                    "Vehicle not found with id: " + id);
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Vehicle not found with id: " + id
+            );
         }
 
         vehicleRepository.deleteById(id);
