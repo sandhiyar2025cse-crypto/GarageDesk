@@ -1,5 +1,6 @@
 package com.example.GarageDesk.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -44,10 +45,12 @@ public class JobCardService {
 
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Vehicle not found"));
+                        HttpStatus.NOT_FOUND,
+                        "Vehicle not found"));
 
         jobCard.setVehicle(vehicle);
         jobCard.setJobStatus(JobStatus.CREATED);
+        jobCard.setQualityChecked(false);
 
         return jobCardRepository.save(jobCard);
     }
@@ -61,10 +64,11 @@ public class JobCardService {
     public JobCard getById(Long id) {
         return jobCardRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Job card not found"));
+                        HttpStatus.NOT_FOUND,
+                        "Job card not found"));
     }
 
-    // UPDATE BASIC DETAILS
+    // UPDATE
     public JobCard update(Long id, JobCard updated) {
 
         JobCard existing = getById(id);
@@ -82,7 +86,8 @@ public class JobCardService {
 
         if (!jobCardRepository.existsById(id)) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Job card not found");
+                    HttpStatus.NOT_FOUND,
+                    "Job card not found");
         }
 
         jobCardRepository.deleteById(id);
@@ -96,12 +101,34 @@ public class JobCardService {
 
         Bay bay = bayRepository.findById(bayId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Bay not found"));
+                        HttpStatus.NOT_FOUND,
+                        "Bay not found"));
 
         Mechanic mechanic = mechanicRepository.findById(mechanicId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Mechanic not found"));
+                        HttpStatus.NOT_FOUND,
+                        "Mechanic not found"));
 
+        // BUSINESS RULE 1
+        // A bay can have only one active job.
+        List<JobStatus> activeStatuses = Arrays.asList(
+                JobStatus.ASSIGNED,
+                JobStatus.IN_PROGRESS
+        );
+
+        List<JobCard> activeJobs =
+                jobCardRepository.findByBayIdAndJobStatusIn(
+                        bayId,
+                        activeStatuses
+                );
+
+        if (!activeJobs.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Bay is already assigned to an active job");
+        }
+
+        // Extra service-layer check
         if (bay.isOccupied()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -127,17 +154,44 @@ public class JobCardService {
         return jobCardRepository.save(jobCard);
     }
 
+    // QUALITY CHECK
+    @Transactional
+    public JobCard performQualityCheck(Long id) {
+
+        JobCard jobCard = getById(id);
+
+        if (jobCard.getJobStatus() != JobStatus.IN_PROGRESS) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Quality check can be performed only for a job in progress");
+        }
+
+        jobCard.setQualityChecked(true);
+
+        return jobCardRepository.save(jobCard);
+    }
+
     // UPDATE STATUS
     @Transactional
     public JobCard updateStatus(Long id, JobStatus status) {
 
         JobCard jobCard = getById(id);
 
+        // BUSINESS RULE 2
+        // Cannot complete without quality check.
+        if (status == JobStatus.COMPLETED &&
+                !jobCard.isQualityChecked()) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Job card cannot be completed until quality check is passed");
+        }
+
         jobCard.setJobStatus(status);
 
-        // Free bay and mechanic when job is completed/cancelled
+        // Release resources after completion/cancellation
         if (status == JobStatus.COMPLETED ||
-            status == JobStatus.CANCELLED) {
+                status == JobStatus.CANCELLED) {
 
             if (jobCard.getBay() != null) {
                 Bay bay = jobCard.getBay();

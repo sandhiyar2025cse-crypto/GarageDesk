@@ -37,7 +37,10 @@ public class JobCardController {
 
         JobCard savedJobCard = jobCardService.create(jobCard);
 
-        return new ResponseEntity<>(savedJobCard, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                savedJobCard,
+                HttpStatus.CREATED
+        );
     }
 
     // READ ALL
@@ -90,7 +93,11 @@ public class JobCardController {
             @RequestParam Long mechanicId) {
 
         return ResponseEntity.ok(
-                jobCardService.assign(id, bayId, mechanicId)
+                jobCardService.assign(
+                        id,
+                        bayId,
+                        mechanicId
+                )
         );
     }
 
@@ -104,8 +111,14 @@ public class JobCardController {
                 jobCardService.updateStatus(id, status)
         );
     }
-    @GetMapping("/test")
-public String testJobCardController() {
-    return "JobCard Controller is working";
-}
+
+    // QUALITY CHECK
+    @PutMapping("/{id}/quality-check")
+    public ResponseEntity<JobCard> performQualityCheck(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                jobCardService.performQualityCheck(id)
+        );
+    }
 }

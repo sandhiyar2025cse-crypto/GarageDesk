@@ -1,12 +1,20 @@
 package com.example.GarageDesk.entity;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 public class JobCard {
@@ -25,12 +33,15 @@ public class JobCard {
     @Enumerated(EnumType.STRING)
     private JobStatus jobStatus = JobStatus.CREATED;
 
+    // Business rule: false until quality check is completed
+    private boolean qualityChecked = false;
+
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Parts cost cannot be negative")
     private BigDecimal partsCost = BigDecimal.ZERO;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Labour charges cannot be negative")
     private BigDecimal labourCharges = BigDecimal.ZERO;
 
     @NotNull(message = "Vehicle is required")
@@ -46,8 +57,11 @@ public class JobCard {
     @JoinColumn(name = "bay_id")
     private Bay bay;
 
+    // Default constructor required by JPA
     public JobCard() {
     }
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -75,6 +89,14 @@ public class JobCard {
 
     public void setJobStatus(JobStatus jobStatus) {
         this.jobStatus = jobStatus;
+    }
+
+    public boolean isQualityChecked() {
+        return qualityChecked;
+    }
+
+    public void setQualityChecked(boolean qualityChecked) {
+        this.qualityChecked = qualityChecked;
     }
 
     public LocalDateTime getCreatedDate() {
