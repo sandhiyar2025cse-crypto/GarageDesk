@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarageDesk | Service Bays</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background: #f4f7fc;
+            color: #17233b;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 275px;
+            background: #111a2d;
+            color: white;
+            padding: 26px 16px 18px;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 8px 10px 27px;
+            border-bottom: 1px solid rgba(255,255,255,.09);
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #315cf5, #6541ef);
+            font-size: 25px;
+            box-shadow: 0 10px 25px rgba(57,88,235,.26);
+        }
+
+        .brand-title {
+            font-size: 21px;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -.3px;
+        }
+
+        .brand-subtitle {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #94a6c6;
+        }
+
+        .menu-label {
+            margin: 29px 10px 12px;
+            color: #6f83a8;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-height: 48px;
+            padding: 0 15px;
+            border-radius: 11px;
+            color: #d6dff1;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,.07);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #3f5cf0, #4c46e8);
+            color: #fff;
+            box-shadow: 0 11px 25px rgba(72,79,224,.24);
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .sidebar-bottom {
+            margin-top: 40px;
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            height: 47px;
+            border-radius: 10px;
+            background: #1d2941;
+            color: #ff9a9a;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .logout-button:hover {
+            background: #25334e;
+        }
+
+        /* MAIN LAYOUT */
+        .main {
+            min-height: 100vh;
+            margin-left: 275px;
+        }
+
+        .topbar {
+            height: 89px;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 0 38px;
+        }
+
+        .topbar-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: #13203a;
+        }
+
+        .topbar-subtitle {
+            margin: 5px 0 0;
+            color: #8491a8;
+            font-size: 13px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 1px solid #dce5f2;
+            border-radius: 999px;
+            background: #f8fbff;
+            color: #234273;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .green-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #20ba67;
+        }
+
+        .dashboard-link {
+            text-decoration: none;
+            color: #334866;
+            border: 1px solid #dbe3ef;
+            background: #fff;
+            border-radius: 9px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 36px 38px 48px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 26px;
+        }
+
+        .eyebrow {
+            color: #60718e;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            color: #12213e;
+            font-size: 32px;
+            letter-spacing: -.7px;
+        }
+
+        .page-header p {
+            margin: 8px 0 0;
+            color: #74839b;
+            font-size: 14px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 10px;
+            padding: 12px 17px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            border: 1px solid #d8e1ee;
+            background: white;
+            color: #50617b;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, #2f62ed, #4f46e5);
+            box-shadow: 0 10px 20px rgba(54,83,225,.18);
+        }
+
+        /* SUMMARY */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e2e8f2;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 7px 20px rgba(21,42,75,.045);
+        }
+
+        .summary-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .blue { background: #edf4ff; }
+        .green { background: #eaf9f1; }
+        .orange { background: #fff2e8; }
+
+        .summary-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            color: #76869f;
+            font-weight: 800;
+        }
+
+        .summary-value {
+            margin-top: 3px;
+            font-size: 28px;
+            font-weight: 800;
+            color: #17233b;
+        }
+
+        /* PANEL */
+        .panel {
+            background: white;
+            border: 1px solid #e2e8f2;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(21,42,75,.045);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .panel-title {
+            margin: 0;
+            font-size: 19px;
+            color: #173052;
+        }
+
+        .panel-subtitle {
+            margin: 5px 0 0;
+            color: #8997ab;
+            font-size: 13px;
+        }
+
+        .search {
+            width: 325px;
+            height: 43px;
+            border: 1px solid #d8e1ed;
+            border-radius: 10px;
+            padding: 0 13px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #5573f1;
+            box-shadow: 0 0 0 3px rgba(85,115,241,.1);
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 15px 18px;
+            background: #f7f9fc;
+            color: #5f708a;
+            font-size: 11px;
+            letter-spacing: .6px;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        td {
+            padding: 17px 18px;
+            border-top: 1px solid #edf1f5;
+            color: #30425e;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fbfcff;
+        }
+
+        .id-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            padding: 6px 9px;
+            border-radius: 8px;
+            background: #eef3fb;
+            color: #48617f;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .bay-number {
+            color: #18365d;
+            font-weight: 800;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border-radius: 999px;
+            padding: 7px 11px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status.available {
+            color: #118151;
+            background: #eaf9f1;
+        }
+
+        .status.occupied {
+            color: #cf631b;
+            background: #fff0e6;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            border: 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .edit {
+            background: #edf4ff;
+            color: #2663e9;
+        }
+
+        .delete {
+            background: #fff0f0;
+            color: #dc3434;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 48px !important;
+            color: #91a0b5 !important;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,24,42,.55);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 25px 70px rgba(5,15,35,.25);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 23px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 21px;
+            color: #173052;
+        }
+
+        .close-btn {
+            border: 0;
+            background: transparent;
+            font-size: 25px;
+            color: #738198;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #435571;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #d7dfeb;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #5573f1;
+            box-shadow: 0 0 0 3px rgba(85,115,241,.1);
+        }
+
+        .info-box {
+            background: #f7f9fc;
+            border: 1px solid #e6ebf2;
+            border-radius: 10px;
+            padding: 12px 13px;
+            color: #687991;
+            font-size: 12px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 17px 23px;
+            border-top: 1px solid #edf1f5;
+        }
+
+        /* TOAST */
+        #toast {
+            position: fixed;
+            right: 25px;
+            bottom: 24px;
+            z-index: 5000;
+            min-width: 260px;
+            max-width: 420px;
+            padding: 14px 17px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            transition: .25s;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #toast.success { background: #178754; }
+        #toast.error { background: #d43f3f; }
+
+        @media (max-width: 1000px) {
+            .sidebar {
+                width: 235px;
+            }
+
+            .main {
+                margin-left: 235px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                width: 78px;
+                padding-left: 9px;
+                padding-right: 9px;
+            }
+
+            .brand-text,
+            .menu-label,
+            .nav-item span:last-child,
+            .logout-button span:last-child {
+                display: none;
+            }
+
+            .brand {
+                justify-content: center;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .main {
+                margin-left: 78px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .topbar-subtitle {
+                display: none;
+            }
+
+            .admin-badge {
+                display: none;
+            }
+
+            .content {
+                padding: 24px 18px 40px;
+            }
+
+            .panel-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-icon">🚗</div>
+
+        <div>
+            <div class="brand-title">GarageDesk</div>
+            <div class="brand-subtitle">Vehicle Service Management</div>
+        </div>
+    </div>
+
+    <div class="menu-label">MAIN MENU</div>
+
+    <nav class="sidebar-nav">
+
+        <a href="/" class="nav-item">
+            <span class="nav-icon">▦</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="/vehicles" class="nav-item">
+            <span class="nav-icon">🚗</span>
+            <span>Vehicles</span>
+        </a>
+
+        <a href="/jobcards" class="nav-item">
+            <span class="nav-icon">📋</span>
+            <span>Job Cards</span>
+        </a>
+
+        <a href="/servicebays" class="nav-item active">
+            <span class="nav-icon">🔧</span>
+            <span>Service Bays</span>
+        </a>
+
+        <a href="/mechanics" class="nav-item">
+            <span class="nav-icon">👨‍🔧</span>
+            <span>Mechanics</span>
+        </a>
+
+        <a href="/bills" class="nav-item">
+            <span class="nav-icon">₹</span>
+            <span>Bills</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+        <a href="/logout" class="logout-button">
+            <span>⇥</span>
+            <span>Logout</span>
+        </a>
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div>
+            <h2 class="topbar-title">Service Bay Management</h2>
+            <p class="topbar-subtitle">
+                Monitor workshop bays and their current availability
+            </p>
+        </div>
+
+        <div class="topbar-right">
+
+            <div class="admin-badge">
+                <span class="green-dot"></span>
+                Administrator
+            </div>
+
+            <a href="/" class="dashboard-link">
+                ← Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+    <section class="content">
+
+        <div class="page-header">
+
+            <div>
+                <div class="eyebrow">WORKSHOP RESOURCES</div>
+
+                <h1>Service Bays</h1>
+
+                <p>
+                    Manage workshop bays and track which bays are currently occupied.
+                </p>
+            </div>
+
+            <div class="header-buttons">
+
+                <button class="btn btn-secondary"
+                        onclick="loadBays()">
+                    ↻ Refresh
+                </button>
+
+                <button class="btn btn-primary"
+                        onclick="openAddModal()">
+                    + Add Service Bay
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+                <div class="summary-icon blue">🏢</div>
+
+                <div>
+                    <div class="summary-label">Total Bays</div>
+                    <div class="summary-value" id="totalBays">0</div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon green">✅</div>
+
+                <div>
+                    <div class="summary-label">Available Bays</div>
+                    <div class="summary-value" id="availableBays">0</div>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon orange">🔧</div>
+
+                <div>
+                    <div class="summary-label">Occupied Bays</div>
+                    <div class="summary-value" id="occupiedBays">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <h2 class="panel-title">All Service Bays</h2>
+
+                    <p class="panel-subtitle">
+                        Every service bay registered in GarageDesk
+                    </p>
+                </div>
+
+                <input
+                    id="baySearch"
+                    class="search"
+                    type="text"
+                    placeholder="Search bay number or bay type..."
+                >
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Bay Number</th>
+                        <th>Bay Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="baysTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- MODAL -->
+
+<div id="bayModal" class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">Add Service Bay</h2>
+
+            <button class="close-btn"
+                    onclick="closeModal()">
+                ×
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <input type="hidden" id="bayId">
+
+            <div class="form-group">
+
+                <label for="bayNumber">
+                    Bay Number
+                </label>
+
+                <input
+                    id="bayNumber"
+                    class="form-control"
+                    type="text"
+                    placeholder="Example: BAY-02"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="bayType">
+                    Bay Type
+                </label>
+
+                <input
+                    id="bayType"
+                    class="form-control"
+                    type="text"
+                    placeholder="Example: General Service"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Current Status</label>
+
+                <div id="statusInfo" class="info-box">
+                    New bays are created as Available.
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button class="btn btn-secondary"
+                    onclick="closeModal()">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary"
+                    onclick="saveBay()">
+                Save Bay
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+    let bays = [];
+    let editingBay = null;
+    let toastTimer = null;
+
+    async function loadBays() {
+
+        try {
+
+            const response =
+                await fetch("/api/bays");
+
+            if (!response.ok) {
+                throw new Error("Unable to load service bays");
+            }
+
+            bays = await response.json();
+
+            updateSummary();
+            renderBays();
+
+        } catch (error) {
+
+            console.error(error);
+            showToast(error.message, "error");
+
+        }
+
+    }
+
+    function updateSummary() {
+
+        const total = bays.length;
+
+        const occupied =
+            bays.filter(bay => bay.occupied === true).length;
+
+        const available =
+            bays.filter(bay => bay.occupied !== true).length;
+
+        document.getElementById("totalBays").textContent = total;
+        document.getElementById("availableBays").textContent = available;
+        document.getElementById("occupiedBays").textContent = occupied;
+
+    }
+
+    function safe(value) {
+
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
+
+    function renderBays(list = bays) {
+
+        const table =
+            document.getElementById("baysTable");
+
+        table.innerHTML = "";
+
+        if (!list.length) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty">
+                        No service bays found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        list.forEach(bay => {
+
+            const occupied =
+                bay.occupied === true;
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        <span class="id-pill">
+                            ${safe(bay.id)}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="bay-number">
+                            ${safe(bay.bayNumber)}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${safe(bay.bayType)}
+                    </td>
+
+                    <td>
+
+                        <span class="status ${occupied ? "occupied" : "available"}">
+
+                            <span class="status-dot"></span>
+
+                            ${occupied ? "OCCUPIED" : "AVAILABLE"}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <button
+                                class="action-btn edit"
+                                onclick="openEditModal(${bay.id})">
+                                Edit
+                            </button>
+
+                            <button
+                                class="action-btn delete"
+                                onclick="deleteBay(${bay.id})">
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            `;
+
+        });
+
+    }
+
+    function openAddModal() {
+
+        editingBay = null;
+
+        document.getElementById("modalTitle").textContent =
+            "Add Service Bay";
+
+        document.getElementById("bayId").value = "";
+        document.getElementById("bayNumber").value = "";
+        document.getElementById("bayType").value = "";
+
+        document.getElementById("statusInfo").innerHTML =
+            "New bays are created as <strong>Available</strong>.";
+
+        document.getElementById("bayModal").classList.add("show");
+
+    }
+
+    function openEditModal(id) {
+
+        const bay =
+            bays.find(item => item.id === id);
+
+        if (!bay) {
+            showToast("Bay not found", "error");
+            return;
+        }
+
+        editingBay = bay;
+
+        document.getElementById("modalTitle").textContent =
+            "Edit Service Bay";
+
+        document.getElementById("bayId").value =
+            bay.id;
+
+        document.getElementById("bayNumber").value =
+            bay.bayNumber || "";
+
+        document.getElementById("bayType").value =
+            bay.bayType || "";
+
+        document.getElementById("statusInfo").innerHTML =
+            bay.occupied
+                ? "Current status: <strong>Occupied</strong>. Occupancy is controlled by job assignment."
+                : "Current status: <strong>Available</strong>.";
+
+        document.getElementById("bayModal").classList.add("show");
+
+    }
+
+    function closeModal() {
+
+        document.getElementById("bayModal")
+            .classList.remove("show");
+
+    }
+
+    async function saveBay() {
+
+        const id =
+            document.getElementById("bayId").value;
+
+        const bayNumber =
+            document.getElementById("bayNumber").value.trim();
+
+        const bayType =
+            document.getElementById("bayType").value.trim();
+
+        if (!bayNumber || !bayType) {
+
+            showToast(
+                "Enter bay number and bay type",
+                "error"
+            );
+
+            return;
+        }
+
+        const payload = {
+
+            bayNumber: bayNumber,
+
+            bayType: bayType,
+
+            occupied:
+                editingBay
+                    ? editingBay.occupied === true
+                    : false
+
+        };
+
+        try {
+
+            const response =
+                await fetch(
+                    id
+                        ? `/api/bays/${id}`
+                        : "/api/bays",
+                    {
+                        method: id ? "PUT" : "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(payload)
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                let message =
+                    data.message ||
+                    "Unable to save service bay";
+
+                if (data.errors) {
+                    message =
+                        Object.values(data.errors).join(", ");
+                }
+
+                throw new Error(message);
+            }
+
+            closeModal();
+
+            showToast(
+                id
+                    ? "Service bay updated successfully"
+                    : "Service bay created successfully",
+                "success"
+            );
+
+            await loadBays();
+
+        } catch (error) {
+
+            console.error(error);
+            showToast(error.message, "error");
+
+        }
+
+    }
+
+    async function deleteBay(id) {
+
+        const bay =
+            bays.find(item => item.id === id);
+
+        if (!bay) return;
+
+        if (bay.occupied) {
+
+            showToast(
+                "Occupied bays cannot be deleted",
+                "error"
+            );
+
+            return;
+
+        }
+
+        if (!confirm(`Delete service bay ${bay.bayNumber}?`)) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/bays/${id}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+            let data = {};
+
+            try {
+                data = await response.json();
+            } catch (ignored) {}
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to delete service bay"
+                );
+
+            }
+
+            showToast(
+                "Service bay deleted successfully",
+                "success"
+            );
+
+            await loadBays();
+
+        } catch (error) {
+
+            console.error(error);
+            showToast(error.message, "error");
+
+        }
+
+    }
+
+    document.getElementById("baySearch")
+        .addEventListener("input", function () {
+
+            const query =
+                this.value.trim().toLowerCase();
+
+            const filtered =
+                bays.filter(bay => {
+
+                    const number =
+                        String(bay.bayNumber || "")
+                            .toLowerCase();
+
+                    const type =
+                        String(bay.bayType || "")
+                            .toLowerCase();
+
+                    const status =
+                        bay.occupied
+                            ? "occupied"
+                            : "available";
+
+                    return (
+                        number.includes(query) ||
+                        type.includes(query) ||
+                        status.includes(query)
+                    );
+
+                });
+
+            renderBays(filtered);
+
+        });
+
+    document.getElementById("bayModal")
+        .addEventListener("click", function (event) {
+
+            if (event.target === this) {
+                closeModal();
+            }
+
+        });
+
+    function showToast(message, type) {
+
+        const toast =
+            document.getElementById("toast");
+
+        clearTimeout(toastTimer);
+
+        toast.textContent = message;
+        toast.className = `${type} show`;
+
+        toastTimer =
+            setTimeout(() => {
+                toast.className = "";
+            }, 2500);
+
+    }
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadBays
+    );
+
+</script>
+
+</body>
+</html>

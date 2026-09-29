@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GarageDesk | Dashboard</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🚗
+        </div>
+
+        <div class="brand-text">
+
+            <h1>
+                GarageDesk
+            </h1>
+
+            <p>
+                Vehicle Service Management
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- MENU -->
+
+    <div class="menu-label">
+        MAIN MENU
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+
+        <!-- DASHBOARD -->
+
+        <button
+            class="nav-item active"
+            onclick="showSection('dashboard', this)">
+
+            <span class="nav-icon">
+                ▦
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </button>
+
+
+        <!-- VEHICLES -->
+
+        <button
+            class="nav-item"
+            onclick="showSection('vehicles', this)">
+
+            <span class="nav-icon">
+                🚗
+            </span>
+
+            <span>
+                Vehicles
+            </span>
+
+        </button>
+
+
+        <!-- JOB CARDS -->
+
+        <button
+            class="nav-item"
+            onclick="showSection('jobcards', this)">
+
+            <span class="nav-icon">
+                📋
+            </span>
+
+            <span>
+                Job Cards
+            </span>
+
+        </button>
+
+
+        <!-- SERVICE BAYS -->
+
+        <a
+            href="/servicebays"
+            class="nav-item">
+
+            <span class="nav-icon">
+                🔧
+            </span>
+
+            <span>
+                Service Bays
+            </span>
+
+        </a>
+
+
+        <!-- MECHANICS -->
+
+        <a
+            href="/mechanics"
+            class="nav-item">
+
+            <span class="nav-icon">
+                👨‍🔧
+            </span>
+
+            <span>
+                Mechanics
+            </span>
+
+        </a>
+
+
+        <!-- BILLS -->
+
+        <a
+            href="/bills"
+            class="nav-item">
+
+            <span class="nav-icon">
+                ₹
+            </span>
+
+            <span>
+                Bills
+            </span>
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- LOGOUT -->
+
+    <div class="sidebar-bottom">
+
+        <a
+            href="/logout"
+            class="logout-button">
+
+            <span>
+                ⇥
+            </span>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+
+        <div class="topbar-left">
+
+            <h2 id="topbarTitle">
+                Garage Dashboard
+            </h2>
+
+            <p>
+                Centralized workshop management
+            </p>
+
+        </div>
+
+
+
+        <div class="topbar-right">
+
+
+            <div class="admin-badge">
+
+                <span class="status-dot"></span>
+
+                Administrator
+
+            </div>
+
+
+            <button
+                class="refresh-button"
+                onclick="loadDashboard()">
+
+                ↻ Refresh
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
+    <div class="content">
+
+
+        <!-- =================================================
+             DASHBOARD SECTION
+        ================================================== -->
+
+        <section
+            id="dashboardSection"
+            class="page-section active">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <div>
+
+                    <div class="eyebrow">
+                        WORKSHOP OVERVIEW
+                    </div>
+
+                    <h1>
+                        Good evening, Admin 👋
+                    </h1>
+
+                    <p>
+                        Here's the current status of your workshop.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <div class="stats-grid">
+
+
+                <!-- TOTAL VEHICLES -->
+
+                <div class="stat-card blue">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Total Vehicles
+                        </span>
+
+                        <div class="stat-icon blue-icon">
+                            🚗
+                        </div>
+
+                    </div>
+
+                    <h3 id="totalVehicles">
+                        0
+                    </h3>
+
+                    <small>
+                        Registered vehicles
+                    </small>
+
+                </div>
+
+
+
+                <!-- ACTIVE JOBS -->
+
+                <div class="stat-card orange">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Active Jobs
+                        </span>
+
+                        <div class="stat-icon orange-icon">
+                            🔧
+                        </div>
+
+                    </div>
+
+                    <h3 id="activeJobs">
+                        0
+                    </h3>
+
+                    <small>
+                        Assigned or in progress
+                    </small>
+
+                </div>
+
+
+
+                <!-- AVAILABLE BAYS -->
+
+                <div class="stat-card green">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Available Bays
+                        </span>
+
+                        <div class="stat-icon green-icon">
+                            🅿️
+                        </div>
+
+                    </div>
+
+                    <h3 id="availableBays">
+                        0
+                    </h3>
+
+                    <small id="baySummary">
+                        0 occupied
+                    </small>
+
+                </div>
+
+
+
+                <!-- AVAILABLE MECHANICS -->
+
+                <div class="stat-card purple">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Available Mechanics
+                        </span>
+
+                        <div class="stat-icon purple-icon">
+                            👨‍🔧
+                        </div>
+
+                    </div>
+
+                    <h3 id="availableMechanics">
+                        0
+                    </h3>
+
+                    <small id="mechanicSummary">
+                        0 busy
+                    </small>
+
+                </div>
+
+
+
+                <!-- TOTAL JOB CARDS -->
+
+                <div class="stat-card blue">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Total Job Cards
+                        </span>
+
+                        <div class="stat-icon blue-icon">
+                            📋
+                        </div>
+
+                    </div>
+
+                    <h3 id="totalJobCards">
+                        0
+                    </h3>
+
+                    <small>
+                        All service records
+                    </small>
+
+                </div>
+
+
+
+                <!-- COMPLETED JOBS -->
+
+                <div class="stat-card green">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Completed Jobs
+                        </span>
+
+                        <div class="stat-icon green-icon">
+                            ✓
+                        </div>
+
+                    </div>
+
+                    <h3 id="completedJobs">
+                        0
+                    </h3>
+
+                    <small>
+                        Successfully completed
+                    </small>
+
+                </div>
+
+
+
+                <!-- TOTAL BAYS -->
+
+                <div class="stat-card orange">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Total Bays
+                        </span>
+
+                        <div class="stat-icon orange-icon">
+                            🛠️
+                        </div>
+
+                    </div>
+
+                    <h3 id="totalBays">
+                        0
+                    </h3>
+
+                    <small>
+                        Workshop service bays
+                    </small>
+
+                </div>
+
+
+
+                <!-- TOTAL BILLS -->
+
+                <div class="stat-card purple">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Total Bills
+                        </span>
+
+                        <div class="stat-icon purple-icon">
+                            ₹
+                        </div>
+
+                    </div>
+
+                    <h3 id="totalBills">
+                        0
+                    </h3>
+
+                    <small>
+                        Generated bills
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUICK ACTIONS
+            ================================================== -->
+
+            <div class="panel">
+
+
+                <div class="section-header">
+
+                    <div>
+
+                        <div class="eyebrow">
+                            QUICK ACCESS
+                        </div>
+
+                        <h2>
+                            Workshop Operations
+                        </h2>
+
+                        <p>
+                            Quickly access the most common tasks.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="quick-grid">
+
+
+                    <!-- VEHICLE -->
+
+                    <button
+                        class="quick-card"
+                        onclick="showSection('vehicles')">
+
+                        <div class="quick-icon blue-bg">
+                            🚗
+                        </div>
+
+                        <h3>
+                            Add Vehicle
+                        </h3>
+
+                        <p>
+                            Register a customer vehicle
+                        </p>
+
+                    </button>
+
+
+
+                    <!-- JOB CARD -->
+
+                    <button
+                        class="quick-card"
+                        onclick="showSection('jobcards')">
+
+                        <div class="quick-icon purple-bg">
+                            📋
+                        </div>
+
+                        <h3>
+                            Create Job Card
+                        </h3>
+
+                        <p>
+                            Create a new service job
+                        </p>
+
+                    </button>
+
+
+
+                    <!-- BAY -->
+
+                    <button
+                        class="quick-card"
+                        onclick="window.location.href='/servicebays'">
+
+                        <div class="quick-icon orange-bg">
+                            🔧
+                        </div>
+
+                        <h3>
+                            Manage Bays
+                        </h3>
+
+                        <p>
+                            Monitor service bay availability
+                        </p>
+
+                    </button>
+
+
+
+                    <!-- BILL -->
+
+                    <button
+                        class="quick-card"
+                        onclick="window.location.href='/bills'">
+
+                        <div class="quick-icon green-bg">
+                            ₹
+                        </div>
+
+                        <h3>
+                            Manage Bills
+                        </h3>
+
+                        <p>
+                            View and generate service bills
+                        </p>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ACTIVE JOBS + BAYS
+            ================================================== -->
+
+            <div class="two-column">
+
+
+                <!-- ACTIVE JOBS -->
+
+                <div class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Active Job Cards
+                            </h2>
+
+                            <p>
+                                Jobs currently in the workshop
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="view-button"
+                            onclick="showSection('jobcards')">
+
+                            View All
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        ID
+                                    </th>
+
+                                    <th>
+                                        Job Card
+                                    </th>
+
+                                    <th>
+                                        Vehicle
+                                    </th>
+
+                                    <th>
+                                        Mechanic
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody
+                                id="activeJobsTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BAY STATUS -->
+
+                <div class="panel">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>
+                                Service Bays
+                            </h2>
+
+                            <p>
+                                Current availability
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="view-button"
+                            onclick="window.location.href='/servicebays'">
+
+                            Manage
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Bay
+                                    </th>
+
+                                    <th>
+                                        Type
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody
+                                id="baysTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             VEHICLES SECTION
+        ================================================== -->
+
+        <section
+            id="vehiclesSection"
+            class="page-section">
+
+
+            <div class="page-heading">
+
+
+                <div>
+
+                    <div class="eyebrow">
+                        CUSTOMER MANAGEMENT
+                    </div>
+
+                    <h1>
+                        Vehicles
+                    </h1>
+
+                    <p>
+                        Manage customer vehicles registered in GarageDesk.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="/vehicles"
+                    class="primary-button">
+
+                    Open Vehicle Management
+
+                </a>
+
+            </div>
+
+
+
+            <div class="panel">
+
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Registered Vehicles
+                        </h2>
+
+                        <p>
+                            Vehicle information from the database
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Registration
+                                </th>
+
+                                <th>
+                                    Owner
+                                </th>
+
+                                <th>
+                                    Phone
+                                </th>
+
+                                <th>
+                                    Model
+                                </th>
+
+                                <th>
+                                    Type
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="vehiclesTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             JOB CARD SECTION
+        ================================================== -->
+
+        <section
+            id="jobcardsSection"
+            class="page-section">
+
+
+            <div class="page-heading">
+
+
+                <div>
+
+                    <div class="eyebrow">
+                        SERVICE WORKFLOW
+                    </div>
+
+                    <h1>
+                        Job Cards
+                    </h1>
+
+                    <p>
+                        Monitor service jobs currently stored in the system.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="/jobcards"
+                    class="primary-button">
+
+                    Open Job Card Management
+
+                </a>
+
+            </div>
+
+
+
+            <div class="panel">
+
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Job Card Overview
+                        </h2>
+
+                        <p>
+                            Current service jobs
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Job Card
+                                </th>
+
+                                <th>
+                                    Vehicle
+                                </th>
+
+                                <th>
+                                    Bay
+                                </th>
+
+                                <th>
+                                    Mechanic
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    QC
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="jobCardsTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div id="toast"></div>
+
+
+
+<script>
+
+
+    /* =========================================================
+       DATA
+    ========================================================= */
+
+    let vehicles = [];
+
+    let jobCards = [];
+
+    let bays = [];
+
+    let mechanics = [];
+
+    let bills = [];
+
+
+
+    /* =========================================================
+       SECTION NAVIGATION
+    ========================================================= */
+
+    function showSection(
+        section,
+        clickedButton = null
+    ) {
+
+        document
+            .querySelectorAll(".page-section")
+            .forEach(
+                sectionElement => {
+
+                    sectionElement.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+        const target =
+            document.getElementById(
+                section + "Section"
+            );
+
+
+        if (target) {
+
+            target.classList.add(
+                "active"
+            );
+
+        }
+
+
+        document
+            .querySelectorAll(".nav-item")
+            .forEach(
+                item => {
+
+                    item.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+        if (clickedButton) {
+
+            clickedButton.classList.add(
+                "active"
+            );
+
+        }
+        else {
+
+            document
+                .querySelectorAll(".nav-item")
+                .forEach(
+                    item => {
+
+                        if (
+                            item.getAttribute(
+                                "onclick"
+                            )
+                            &&
+                            item.getAttribute(
+                                "onclick"
+                            )
+                            .includes(
+                                "'" + section + "'"
+                            )
+                        ) {
+
+                            item.classList.add(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+        const titles = {
+
+            dashboard:
+                "Garage Dashboard",
+
+            vehicles:
+                "Vehicle Management",
+
+            jobcards:
+                "Job Card Management"
+
+        };
+
+
+        document.getElementById(
+            "topbarTitle"
+        ).textContent =
+            titles[section] ||
+            "Garage Dashboard";
+
+    }
+
+
+
+    /* =========================================================
+       COMING SOON MESSAGE
+    ========================================================= */
+
+    function showComingSoon(
+        name
+    ) {
+
+        showToast(
+            name + " will be added next.",
+            "success"
+        );
+
+    }
+
+
+
+    /* =========================================================
+       TOAST
+    ========================================================= */
+
+    function showToast(
+        message,
+        type
+    ) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        toast.textContent =
+            message;
+
+
+        toast.className =
+            type;
+
+
+        toast.style.display =
+            "block";
+
+
+        setTimeout(
+            function() {
+
+                toast.style.display =
+                    "none";
+
+            },
+            2500
+        );
+
+    }
+
+
+
+    /* =========================================================
+       STATUS BADGE
+    ========================================================= */
+
+    function statusBadge(
+        status
+    ) {
+
+        if (!status) {
+
+            return "-";
+
+        }
+
+
+        const cssClass =
+            status
+                .toLowerCase()
+                .replaceAll(
+                    "_",
+                    "-"
+                );
+
+
+        const text =
+            status.replaceAll(
+                "_",
+                " "
+            );
+
+
+        return `
+
+            <span
+                class="badge ${cssClass}">
+
+                ${text}
+
+            </span>
+
+        `;
+
+    }
+
+
+
+    /* =========================================================
+       LOAD DASHBOARD DATA
+    ========================================================= */
+
+    async function loadDashboard() {
+
+        try {
+
+
+            const responses =
+                await Promise.all([
+
+                    fetch("/api/vehicles"),
+
+                    fetch("/api/jobcards"),
+
+                    fetch("/api/bays"),
+
+                    fetch("/api/mechanics"),
+
+                    fetch("/api/bills")
+
+                ]);
+
+
+            if (
+                responses.some(
+                    response =>
+                        !response.ok
+                )
+            ) {
+
+                throw new Error(
+                    "Unable to load dashboard data"
+                );
+
+            }
+
+
+
+            vehicles =
+                await responses[0].json();
+
+
+            jobCards =
+                await responses[1].json();
+
+
+            bays =
+                await responses[2].json();
+
+
+            mechanics =
+                await responses[3].json();
+
+
+            bills =
+                await responses[4].json();
+
+
+
+            updateStatistics();
+
+            renderVehicles();
+
+            renderJobCards();
+
+            renderDashboardJobs();
+
+            renderDashboardBays();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+
+            showToast(
+                "Unable to load dashboard data",
+                "error"
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       STATISTICS
+    ========================================================= */
+
+    function updateStatistics() {
+
+
+        const activeJobs =
+            jobCards.filter(
+                job =>
+                    job.jobStatus ===
+                    "ASSIGNED"
+                    ||
+                    job.jobStatus ===
+                    "IN_PROGRESS"
+            );
+
+
+        const completedJobs =
+            jobCards.filter(
+                job =>
+                    job.jobStatus ===
+                    "COMPLETED"
+            );
+
+
+        const availableBays =
+            bays.filter(
+                bay =>
+                    !bay.occupied
+            );
+
+
+        const occupiedBays =
+            bays.filter(
+                bay =>
+                    bay.occupied
+            );
+
+
+        const availableMechanics =
+            mechanics.filter(
+                mechanic =>
+                    mechanic.available
+            );
+
+
+        const busyMechanics =
+            mechanics.filter(
+                mechanic =>
+                    !mechanic.available
+            );
+
+
+
+        document.getElementById(
+            "totalVehicles"
+        ).textContent =
+            vehicles.length;
+
+
+        document.getElementById(
+            "activeJobs"
+        ).textContent =
+            activeJobs.length;
+
+
+        document.getElementById(
+            "availableBays"
+        ).textContent =
+            availableBays.length;
+
+
+        document.getElementById(
+            "baySummary"
+        ).textContent =
+            occupiedBays.length +
+            " occupied";
+
+
+        document.getElementById(
+            "availableMechanics"
+        ).textContent =
+            availableMechanics.length;
+
+
+        document.getElementById(
+            "mechanicSummary"
+        ).textContent =
+            busyMechanics.length +
+            " busy";
+
+
+        document.getElementById(
+            "totalJobCards"
+        ).textContent =
+            jobCards.length;
+
+
+        document.getElementById(
+            "completedJobs"
+        ).textContent =
+            completedJobs.length;
+
+
+        document.getElementById(
+            "totalBays"
+        ).textContent =
+            bays.length;
+
+
+        document.getElementById(
+            "totalBills"
+        ).textContent =
+            bills.length;
+
+    }
+
+
+
+    /* =========================================================
+       VEHICLE TABLE
+    ========================================================= */
+
+    function renderVehicles(
+        list = vehicles
+    ) {
+
+        const table =
+            document.getElementById(
+                "vehiclesTable"
+            );
+
+
+        table.innerHTML =
+            "";
+
+
+        if (
+            list.length === 0
+        ) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="empty">
+
+                        No vehicles registered.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        list.forEach(
+            vehicle => {
+
+                table.innerHTML += `
+
+                    <tr>
+
+                        <td>
+
+                            <span class="id-pill">
+
+                                ${vehicle.id}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                ${vehicle.registrationNumber}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            ${vehicle.ownerName}
+
+                        </td>
+
+
+                        <td>
+
+                            ${vehicle.phoneNumber}
+
+                        </td>
+
+
+                        <td>
+
+                            ${vehicle.model}
+
+                        </td>
+
+
+                        <td>
+
+                            ${vehicle.vehicleType}
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================================
+       JOB CARD TABLE
+    ========================================================= */
+
+    function renderJobCards(
+        list = jobCards
+    ) {
+
+        const table =
+            document.getElementById(
+                "jobCardsTable"
+            );
+
+
+        table.innerHTML =
+            "";
+
+
+        if (
+            list.length === 0
+        ) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="empty">
+
+                        No job cards found.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        list.forEach(
+            job => {
+
+
+                const vehicle =
+                    job.vehicle
+                        ? job.vehicle.registrationNumber
+                        : "-";
+
+
+                const bay =
+                    job.bay
+                        ? job.bay.bayNumber
+                        : "-";
+
+
+                const mechanic =
+                    job.mechanic
+                        ? job.mechanic.name
+                        : "-";
+
+
+                const qc =
+                    job.qualityChecked
+                        ? `<span class="badge qc-passed">PASSED</span>`
+                        : `<span class="badge qc-pending">PENDING</span>`;
+
+
+
+                table.innerHTML += `
+
+                    <tr>
+
+                        <td>
+
+                            <span class="id-pill">
+                                ${job.id}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+                                ${job.jobCardNumber}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            ${vehicle}
+                        </td>
+
+
+                        <td>
+                            ${bay}
+                        </td>
+
+
+                        <td>
+                            ${mechanic}
+                        </td>
+
+
+                        <td>
+                            ${statusBadge(
+                                job.jobStatus
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${qc}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================================================
+       DASHBOARD ACTIVE JOBS
+    ========================================================= */
+
+    function renderDashboardJobs() {
+
+
+        const table =
+            document.getElementById(
+                "activeJobsTable"
+            );
+
+
+        table.innerHTML =
+            "";
+
+
+        const activeJobs =
+            jobCards.filter(
+                job =>
+                    job.jobStatus ===
+                    "ASSIGNED"
+                    ||
+                    job.jobStatus ===
+                    "IN_PROGRESS"
+            );
+
+
+        if (
+            activeJobs.length === 0
+        ) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="5"
+                        class="empty">
+
+                        No active jobs.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        activeJobs
+            .slice(0,5)
+            .forEach(
+                job => {
+
+
+                    const vehicle =
+                        job.vehicle
+                            ? job.vehicle.registrationNumber
+                            : "-";
+
+
+                    const mechanic =
+                        job.mechanic
+                            ? job.mechanic.name
+                            : "-";
+
+
+
+                    table.innerHTML += `
+
+                        <tr>
+
+                            <td>
+
+                                <span class="id-pill">
+
+                                    ${job.id}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    ${job.jobCardNumber}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+
+                                ${vehicle}
+
+                            </td>
+
+
+                            <td>
+
+                                ${mechanic}
+
+                            </td>
+
+
+                            <td>
+
+                                ${statusBadge(
+                                    job.jobStatus
+                                )}
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            );
+
+    }
+
+
+
+    /* =========================================================
+       DASHBOARD BAYS
+    ========================================================= */
+
+    function renderDashboardBays() {
+
+
+        const table =
+            document.getElementById(
+                "baysTable"
+            );
+
+
+        table.innerHTML =
+            "";
+
+
+        if (
+            bays.length === 0
+        ) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="3"
+                        class="empty">
+
+                        No service bays found.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        bays
+            .slice(0,6)
+            .forEach(
+                bay => {
+
+
+                    const status =
+                        bay.occupied
+                            ? "OCCUPIED"
+                            : "AVAILABLE";
+
+
+
+                    table.innerHTML += `
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    ${bay.bayNumber}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+
+                                ${bay.bayType}
+
+                            </td>
+
+
+                            <td>
+
+                                ${statusBadge(
+                                    status
+                                )}
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            );
+
+    }
+
+
+
+    /* =========================================================
+       INITIAL LOAD
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            loadDashboard();
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

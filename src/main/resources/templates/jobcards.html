@@ -1,0 +1,3440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GarageDesk | Job Cards</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+
+    <style>
+
+        /* =====================================================
+           JOB CARD PAGE
+        ===================================================== */
+
+        .job-page-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .job-page-header h1 {
+
+            font-size: 30px;
+
+            font-weight: 750;
+
+            color: #101828;
+
+            margin-top: 4px;
+        }
+
+
+        .job-page-header p {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .job-summary {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 17px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .summary-box {
+
+            background: white;
+
+            border: 1px solid #e4e9f2;
+
+            border-radius: 15px;
+
+            padding: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            box-shadow:
+                0 8px 24px
+                rgba(15,23,42,0.06);
+        }
+
+
+        .summary-icon {
+
+            width: 44px;
+
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 11px;
+
+            font-size: 19px;
+        }
+
+
+        .summary-blue {
+
+            background: #eff6ff;
+        }
+
+
+        .summary-orange {
+
+            background: #fff7ed;
+        }
+
+
+        .summary-green {
+
+            background: #ecfdf5;
+        }
+
+
+        .summary-purple {
+
+            background: #f5f3ff;
+        }
+
+
+        .summary-label {
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .summary-number {
+
+            color: #111827;
+
+            font-size: 25px;
+
+            font-weight: 750;
+
+            margin-top: 2px;
+        }
+
+
+        /* =====================================================
+           TABLE TOOLBAR
+        ===================================================== */
+
+        .job-toolbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .job-toolbar h2 {
+
+            color: #111827;
+
+            font-size: 18px;
+        }
+
+
+        .job-toolbar p {
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            margin-top: 3px;
+        }
+
+
+        .job-search {
+
+            width: 290px;
+
+            height: 40px;
+
+            border: 1px solid #d8dfeb;
+
+            border-radius: 8px;
+
+            padding: 0 12px;
+
+            outline: none;
+
+            font-size: 12px;
+
+            color: #172033;
+        }
+
+
+        .job-search:focus {
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(37,99,235,0.08);
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .job-table {
+
+            min-width: 1150px;
+        }
+
+
+        .job-table th {
+
+            padding: 13px 10px;
+        }
+
+
+        .job-table td {
+
+            padding: 13px 10px;
+
+            vertical-align: middle;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .job-actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 5px;
+
+            max-width: 260px;
+        }
+
+
+        .job-action-btn {
+
+            border: none;
+
+            border-radius: 7px;
+
+            padding: 7px 9px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: .15s;
+        }
+
+
+        .job-action-btn:hover {
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .action-blue {
+
+            background: #eff6ff;
+
+            color: #2563eb;
+        }
+
+
+        .action-purple {
+
+            background: #f5f3ff;
+
+            color: #7c3aed;
+        }
+
+
+        .action-green {
+
+            background: #ecfdf5;
+
+            color: #047857;
+        }
+
+
+        .action-orange {
+
+            background: #fff7ed;
+
+            color: #c2410c;
+        }
+
+
+        .action-red {
+
+            background: #fef2f2;
+
+            color: #dc2626;
+        }
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .job-modal-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(15,23,42,0.55);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 5000;
+
+            backdrop-filter: blur(3px);
+        }
+
+
+        .job-modal-overlay.show {
+
+            display: flex;
+        }
+
+
+        .job-modal {
+
+            width: min(650px, 100%);
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 25px 70px
+                rgba(15,23,42,0.25);
+        }
+
+
+        .job-modal-header {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+        }
+
+
+        .job-modal-header h2 {
+
+            color: #111827;
+
+            font-size: 20px;
+
+            margin-top: 3px;
+        }
+
+
+        .job-modal-header p {
+
+            color: #94a3b8;
+
+            font-size: 11px;
+
+            margin-top: 3px;
+        }
+
+
+        .job-close {
+
+            width: 32px;
+
+            height: 32px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+            font-size: 18px;
+
+            cursor: pointer;
+        }
+
+
+        .job-close:hover {
+
+            background: #e2e8f0;
+        }
+
+
+        .job-form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 16px;
+        }
+
+
+        .job-form-group.full {
+
+            grid-column:
+                1 / -1;
+        }
+
+
+        .job-form-group label {
+
+            display: block;
+
+            color: #334155;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+        }
+
+
+        .job-form-group input,
+        .job-form-group select {
+
+            width: 100%;
+
+            height: 45px;
+
+            border: 1px solid #d8dfeb;
+
+            border-radius: 8px;
+
+            padding: 0 12px;
+
+            outline: none;
+
+            color: #172033;
+
+            font-size: 12px;
+
+            background: white;
+        }
+
+
+        .job-form-group input:focus,
+        .job-form-group select:focus {
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(37,99,235,0.08);
+        }
+
+
+        .job-form-group select:disabled {
+
+            background: #f8fafc;
+
+            color: #64748b;
+        }
+
+
+        .job-modal-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 9px;
+
+            margin-top: 20px;
+        }
+
+
+        /* =====================================================
+           ASSIGNMENT MODAL
+        ===================================================== */
+
+        .assign-note {
+
+            background: #eff6ff;
+
+            border: 1px solid #dbeafe;
+
+            color: #1d4ed8;
+
+            padding: 11px 13px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            margin-bottom: 16px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .job-summary {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .job-page-header {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .job-toolbar {
+
+                align-items:
+                    stretch;
+
+                flex-direction:
+                    column;
+            }
+
+
+            .job-search {
+
+                width:
+                    100%;
+            }
+
+
+            .job-form-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .job-form-group.full {
+
+                grid-column:
+                    auto;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .job-summary {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🚗
+        </div>
+
+
+        <div class="brand-text">
+
+            <h1>
+                GarageDesk
+            </h1>
+
+            <p>
+                Vehicle Service Management
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-label">
+        MAIN MENU
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+
+        <a href="/"
+           class="nav-item">
+
+            <span class="nav-icon">
+                ▦
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a href="/vehicles"
+           class="nav-item">
+
+            <span class="nav-icon">
+                🚗
+            </span>
+
+            <span>
+                Vehicles
+            </span>
+
+        </a>
+
+
+        <a href="/jobcards"
+           class="nav-item active">
+
+            <span class="nav-icon">
+                📋
+            </span>
+
+            <span>
+                Job Cards
+            </span>
+
+        </a>
+
+
+        <a href="/servicebays"
+           class="nav-item">
+
+            <span class="nav-icon">
+                🔧
+            </span>
+
+            <span>
+                Service Bays
+            </span>
+
+        </a>
+
+
+        <a href="/mechanics"
+           class="nav-item">
+
+            <span class="nav-icon">
+                👨‍🔧
+            </span>
+
+            <span>
+                Mechanics
+            </span>
+
+        </a>
+
+
+        <a href="/bills"
+           class="nav-item">
+
+            <span class="nav-icon">
+                ₹
+            </span>
+
+            <span>
+                Bills
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <a
+            href="/logout"
+            class="logout-button">
+
+            <span>
+                ⇥
+            </span>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+
+        <div class="topbar-left">
+
+            <h2>
+                Job Card Management
+            </h2>
+
+            <p>
+                Track every vehicle service from creation to completion
+            </p>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+            <div class="admin-badge">
+
+                <span class="status-dot"></span>
+
+                Administrator
+
+            </div>
+
+
+            <a
+                href="/"
+                class="secondary-button">
+
+                ← Dashboard
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="job-page-header">
+
+
+            <div>
+
+                <div class="eyebrow">
+                    SERVICE WORKFLOW
+                </div>
+
+
+                <h1>
+                    Job Cards
+                </h1>
+
+
+                <p>
+                    Create, assign and monitor workshop service jobs.
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary-button"
+                onclick="openCreateJobModal()">
+
+                + Create Job Card
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
+
+        <div class="job-summary">
+
+
+            <div class="summary-box">
+
+                <div class="summary-icon summary-blue">
+                    📋
+                </div>
+
+
+                <div>
+
+                    <div class="summary-label">
+                        Total Jobs
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="totalJobs">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-box">
+
+                <div class="summary-icon summary-orange">
+                    🔧
+                </div>
+
+
+                <div>
+
+                    <div class="summary-label">
+                        Active Jobs
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="activeJobs">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-box">
+
+                <div class="summary-icon summary-green">
+                    ✓
+                </div>
+
+
+                <div>
+
+                    <div class="summary-label">
+                        Completed
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="completedJobs">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-box">
+
+                <div class="summary-icon summary-purple">
+                    🅿️
+                </div>
+
+
+                <div>
+
+                    <div class="summary-label">
+                        Available Bays
+                    </div>
+
+                    <div
+                        class="summary-number"
+                        id="availableBays">
+
+                        0
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             JOB TABLE
+        ================================================== -->
+
+        <div class="panel">
+
+
+            <div class="job-toolbar">
+
+
+                <div>
+
+                    <h2>
+                        All Job Cards
+                    </h2>
+
+                    <p>
+                        Complete service job records
+                    </p>
+
+                </div>
+
+
+                <input
+                    type="text"
+                    id="jobSearch"
+                    class="job-search"
+                    placeholder="Search job card, vehicle or status">
+
+            </div>
+
+
+
+            <div class="table-wrap">
+
+
+                <table class="job-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Job Card
+                            </th>
+
+                            <th>
+                                Vehicle
+                            </th>
+
+                            <th>
+                                Service
+                            </th>
+
+                            <th>
+                                Bay
+                            </th>
+
+                            <th>
+                                Mechanic
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                QC
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="jobCardsTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================================
+     CREATE / EDIT JOB MODAL
+========================================================= -->
+
+<div
+    class="job-modal-overlay"
+    id="jobModal">
+
+
+    <div class="job-modal">
+
+
+        <div class="job-modal-header">
+
+
+            <div>
+
+                <div class="eyebrow">
+                    SERVICE RECORD
+                </div>
+
+                <h2 id="jobModalTitle">
+                    Create Job Card
+                </h2>
+
+                <p>
+                    Vehicle and service information
+                </p>
+
+            </div>
+
+
+            <button
+                class="job-close"
+                onclick="closeJobModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+
+        <form id="jobForm">
+
+
+            <input
+                type="hidden"
+                id="editJobId">
+
+
+
+            <div class="job-form-grid">
+
+
+                <!-- JOB CARD NUMBER -->
+
+                <div
+                    class="job-form-group">
+
+                    <label>
+                        Job Card Number
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="jobCardNumber"
+                        placeholder="JC-2026-001"
+                        required>
+
+                </div>
+
+
+
+                <!-- VEHICLE -->
+
+                <div
+                    class="job-form-group">
+
+                    <label>
+                        Vehicle
+                    </label>
+
+
+                    <select
+                        id="jobVehicle"
+                        required>
+
+                        <option value="">
+                            Loading vehicles...
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- SERVICE DESCRIPTION -->
+
+                <div
+                    class="job-form-group full">
+
+                    <label>
+                        Service Description
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="serviceDescription"
+                        placeholder="Full service and brake inspection"
+                        required>
+
+                </div>
+
+
+
+                <!-- PARTS -->
+
+                <div
+                    class="job-form-group">
+
+                    <label>
+                        Parts Cost
+                    </label>
+
+
+                    <input
+                        type="number"
+                        id="partsCost"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                        placeholder="0.00">
+
+                </div>
+
+
+
+                <!-- LABOUR -->
+
+                <div
+                    class="job-form-group">
+
+                    <label>
+                        Labour Charges
+                    </label>
+
+
+                    <input
+                        type="number"
+                        id="labourCharges"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                        placeholder="0.00">
+
+                </div>
+
+
+            </div>
+
+
+
+            <div
+                class="result-box"
+                id="jobResult">
+
+            </div>
+
+
+
+            <div
+                class="job-modal-actions">
+
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="closeJobModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                    id="jobSaveButton">
+
+                    Create Job Card
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     ASSIGN MODAL
+========================================================= -->
+
+<div
+    class="job-modal-overlay"
+    id="assignModal">
+
+
+    <div class="job-modal">
+
+
+        <div class="job-modal-header">
+
+
+            <div>
+
+                <div class="eyebrow">
+                    RESOURCE ALLOCATION
+                </div>
+
+                <h2>
+                    Assign Job
+                </h2>
+
+                <p>
+                    Select an available bay and mechanic.
+                </p>
+
+            </div>
+
+
+            <button
+                class="job-close"
+                onclick="closeAssignModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+
+        <div class="assign-note">
+
+            Only currently available bays and mechanics can be assigned.
+
+        </div>
+
+
+
+        <div class="job-form-grid">
+
+
+            <!-- JOB -->
+
+            <div
+                class="job-form-group full">
+
+                <label>
+                    Job Card
+                </label>
+
+
+                <select
+                    id="assignJob">
+
+                </select>
+
+            </div>
+
+
+
+            <!-- BAY -->
+
+            <div
+                class="job-form-group">
+
+                <label>
+                    Available Bay
+                </label>
+
+
+                <select
+                    id="assignBay">
+
+                </select>
+
+            </div>
+
+
+
+            <!-- MECHANIC -->
+
+            <div
+                class="job-form-group">
+
+                <label>
+                    Available Mechanic
+                </label>
+
+
+                <select
+                    id="assignMechanic">
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div
+            class="result-box"
+            id="assignResult">
+
+        </div>
+
+
+
+        <div
+            class="job-modal-actions">
+
+
+            <button
+                class="secondary-button"
+                onclick="closeAssignModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                class="primary-button"
+                onclick="submitAssignment()">
+
+                Assign Job
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div id="toast"></div>
+
+
+
+<script>
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+let jobCards = [];
+
+let vehicles = [];
+
+let bays = [];
+
+let mechanics = [];
+
+let bills = [];
+
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+async function loadData() {
+
+    try {
+
+
+        const responses =
+            await Promise.all([
+
+                fetch("/api/jobcards"),
+
+                fetch("/api/vehicles"),
+
+                fetch("/api/bays"),
+
+                fetch("/api/mechanics"),
+
+                fetch("/api/bills")
+
+            ]);
+
+
+        if (
+            responses.some(
+                response =>
+                    !response.ok
+            )
+        ) {
+
+            throw new Error(
+                "Unable to load job card data"
+            );
+
+        }
+
+
+        jobCards =
+            await responses[0].json();
+
+
+        vehicles =
+            await responses[1].json();
+
+
+        bays =
+            await responses[2].json();
+
+
+        mechanics =
+            await responses[3].json();
+
+
+        bills =
+            await responses[4].json();
+
+
+        updateSummary();
+
+        renderJobCards();
+
+        loadVehicleDropdown();
+
+        updateAssignmentDropdowns();
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function updateSummary() {
+
+
+    const active =
+        jobCards.filter(
+            job =>
+                job.jobStatus === "ASSIGNED"
+                ||
+                job.jobStatus === "IN_PROGRESS"
+        );
+
+
+    const completed =
+        jobCards.filter(
+            job =>
+                job.jobStatus === "COMPLETED"
+        );
+
+
+    const available =
+        bays.filter(
+            bay =>
+                !bay.occupied
+        );
+
+
+    document.getElementById(
+        "totalJobs"
+    ).textContent =
+        jobCards.length;
+
+
+    document.getElementById(
+        "activeJobs"
+    ).textContent =
+        active.length;
+
+
+    document.getElementById(
+        "completedJobs"
+    ).textContent =
+        completed.length;
+
+
+    document.getElementById(
+        "availableBays"
+    ).textContent =
+        available.length;
+
+}
+
+
+
+/* =========================================================
+   VEHICLE DROPDOWN
+========================================================= */
+
+function loadVehicleDropdown() {
+
+    const select =
+        document.getElementById(
+            "jobVehicle"
+        );
+
+
+    select.innerHTML = `
+
+        <option value="">
+            Select vehicle
+        </option>
+
+    `;
+
+
+    if (
+        vehicles.length === 0
+    ) {
+
+        select.innerHTML = `
+
+            <option value="">
+                No vehicles registered
+            </option>
+
+        `;
+
+        return;
+
+    }
+
+
+    vehicles.forEach(
+        vehicle => {
+
+            select.innerHTML += `
+
+                <option
+                    value="${vehicle.id}">
+
+                    ${vehicle.registrationNumber}
+                    -
+                    ${vehicle.ownerName}
+                    -
+                    ${vehicle.model}
+
+                </option>
+
+            `;
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   CREATE JOB MODAL
+========================================================= */
+
+function openCreateJobModal() {
+
+    document.getElementById(
+        "jobForm"
+    ).reset();
+
+
+    document.getElementById(
+        "editJobId"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "jobModalTitle"
+    ).textContent =
+        "Create Job Card";
+
+
+    document.getElementById(
+        "jobSaveButton"
+    ).textContent =
+        "Create Job Card";
+
+
+    document.getElementById(
+        "jobVehicle"
+    ).disabled =
+        false;
+
+
+    document.getElementById(
+        "partsCost"
+    ).value =
+        "0";
+
+
+    document.getElementById(
+        "labourCharges"
+    ).value =
+        "0";
+
+
+    document.getElementById(
+        "jobResult"
+    ).style.display =
+        "none";
+
+
+    loadVehicleDropdown();
+
+
+    document.getElementById(
+        "jobModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+
+/* =========================================================
+   EDIT JOB MODAL
+========================================================= */
+
+function openEditJobModal(
+    id
+) {
+
+    const job =
+        jobCards.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!job) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "editJobId"
+    ).value =
+        job.id;
+
+
+    document.getElementById(
+        "jobCardNumber"
+    ).value =
+        job.jobCardNumber;
+
+
+    loadVehicleDropdown();
+
+
+    document.getElementById(
+        "jobVehicle"
+    ).value =
+        job.vehicle
+            ? job.vehicle.id
+            : "";
+
+
+    document.getElementById(
+        "jobVehicle"
+    ).disabled =
+        true;
+
+
+    document.getElementById(
+        "serviceDescription"
+    ).value =
+        job.serviceDescription;
+
+
+    document.getElementById(
+        "partsCost"
+    ).value =
+        job.partsCost || 0;
+
+
+    document.getElementById(
+        "labourCharges"
+    ).value =
+        job.labourCharges || 0;
+
+
+    document.getElementById(
+        "jobModalTitle"
+    ).textContent =
+        "Edit Job Card";
+
+
+    document.getElementById(
+        "jobSaveButton"
+    ).textContent =
+        "Update Job Card";
+
+
+    document.getElementById(
+        "jobResult"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "jobModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+
+/* =========================================================
+   CLOSE JOB MODAL
+========================================================= */
+
+function closeJobModal() {
+
+    document.getElementById(
+        "jobModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+
+/* =========================================================
+   CREATE / UPDATE JOB
+========================================================= */
+
+document.getElementById(
+    "jobForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const id =
+            document.getElementById(
+                "editJobId"
+            ).value;
+
+
+        const vehicleId =
+            document.getElementById(
+                "jobVehicle"
+            ).value;
+
+
+        if (!vehicleId) {
+
+            showToast(
+                "Please select a vehicle",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const payload = {
+
+            jobCardNumber:
+                document.getElementById(
+                    "jobCardNumber"
+                ).value.trim(),
+
+            serviceDescription:
+                document.getElementById(
+                    "serviceDescription"
+                ).value.trim(),
+
+            partsCost:
+                Number(
+                    document.getElementById(
+                        "partsCost"
+                    ).value
+                ) || 0,
+
+            labourCharges:
+                Number(
+                    document.getElementById(
+                        "labourCharges"
+                    ).value
+                ) || 0,
+
+            vehicle: {
+
+                id:
+                    Number(
+                        vehicleId
+                    )
+
+            }
+
+        };
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    id
+                        ? `/api/jobcards/${id}`
+                        : "/api/jobcards",
+                    {
+
+                        method:
+                            id
+                                ? "PUT"
+                                : "POST",
+
+                        headers:
+                            {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                        body:
+                            JSON.stringify(
+                                payload
+                            )
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+
+                let message =
+                    data.message
+                    ||
+                    "Unable to save job card";
+
+
+                if (
+                    data.errors
+                ) {
+
+                    message =
+                        Object.values(
+                            data.errors
+                        ).join(", ");
+
+                }
+
+
+                throw new Error(
+                    message
+                );
+
+            }
+
+
+
+            /* CREATE */
+
+            if (!id) {
+
+
+                document.getElementById(
+                    "jobResult"
+                ).innerHTML = `
+
+                    ✓ Job Card created successfully.
+
+                    <br>
+
+                    Job Card ID:
+                    <strong>
+                        ${data.id}
+                    </strong>
+
+                    <br>
+
+                    Job Card Number:
+                    <strong>
+                        ${data.jobCardNumber}
+                    </strong>
+
+                    <br>
+
+                    Status:
+                    <strong>
+                        ${data.jobStatus}
+                    </strong>
+
+                `;
+
+
+                document.getElementById(
+                    "jobResult"
+                ).style.display =
+                    "block";
+
+
+                showToast(
+                    "Job Card created successfully",
+                    "success"
+                );
+
+            }
+            else {
+
+
+                closeJobModal();
+
+
+                showToast(
+                    "Job Card updated successfully",
+                    "success"
+                );
+
+            }
+
+
+            await loadData();
+
+        }
+
+        catch(error) {
+
+            console.error(error);
+
+
+            showToast(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+function statusBadge(status) {
+
+    const labels = {
+        CREATED: "CREATED",
+        ASSIGNED: "ASSIGNED",
+        IN_PROGRESS: "IN PROGRESS",
+        COMPLETED: "COMPLETED",
+        CANCELLED: "CANCELLED"
+    };
+
+    return `
+        <span class="badge status-${String(status || "").toLowerCase()}">
+            ${labels[status] || status || "-"}
+        </span>
+    `;
+}
+
+
+
+/* =========================================================
+   RENDER JOB CARDS
+========================================================= */
+
+function renderJobCards(
+    list = jobCards
+) {
+
+    const table =
+        document.getElementById(
+            "jobCardsTable"
+        );
+
+
+    table.innerHTML =
+        "";
+
+
+    if (
+        list.length === 0
+    ) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="9"
+                    class="empty">
+
+                    No job cards found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    const billedJobIds =
+        new Set(
+            bills
+                .filter(
+                    bill =>
+                        bill.jobCard
+                )
+                .map(
+                    bill =>
+                        bill.jobCard.id
+                )
+        );
+
+
+    list.forEach(
+        job => {
+
+
+            const vehicle =
+                job.vehicle
+                    ? job.vehicle.registrationNumber
+                    : "-";
+
+
+            const bay =
+                job.bay
+                    ? job.bay.bayNumber
+                    : "-";
+
+
+            const mechanic =
+                job.mechanic
+                    ? job.mechanic.name
+                    : "-";
+
+
+            const qcBadge =
+                job.qualityChecked
+
+                    ?
+
+                `<span class="badge qc-passed">PASSED</span>`
+
+                    :
+
+                `<span class="badge qc-pending">PENDING</span>`;
+
+
+
+            let actions = "";
+
+
+
+            /* CREATED → ASSIGN */
+
+            if (
+                job.jobStatus ===
+                "CREATED"
+            ) {
+
+                actions += `
+
+                    <button
+                        class="job-action-btn action-purple"
+                        onclick="openAssignModal(
+                            ${job.id}
+                        )">
+
+                        Assign
+
+                    </button>
+
+                `;
+
+            }
+
+
+
+            /* ASSIGNED → START */
+
+            if (
+                job.jobStatus ===
+                "ASSIGNED"
+            ) {
+
+                actions += `
+
+                    <button
+                        class="job-action-btn action-blue"
+                        onclick="startJob(
+                            ${job.id}
+                        )">
+
+                        Start
+
+                    </button>
+
+                `;
+
+            }
+
+
+
+            /* IN_PROGRESS → QC */
+
+            if (
+                job.jobStatus ===
+                "IN_PROGRESS"
+                &&
+                !job.qualityChecked
+            ) {
+
+                actions += `
+
+                    <button
+                        class="job-action-btn action-green"
+                        onclick="qualityCheck(
+                            ${job.id}
+                        )">
+
+                        QC
+
+                    </button>
+
+                `;
+
+            }
+
+
+
+            /* QC PASSED → COMPLETE */
+
+            if (
+                job.jobStatus ===
+                "IN_PROGRESS"
+                &&
+                job.qualityChecked
+            ) {
+
+                actions += `
+
+                    <button
+                        class="job-action-btn action-green"
+                        onclick="completeJob(
+                            ${job.id}
+                        )">
+
+                        Complete
+
+                    </button>
+
+                `;
+
+            }
+
+
+
+            /* CANCEL */
+
+            if (
+                job.jobStatus !==
+                "COMPLETED"
+                &&
+                job.jobStatus !==
+                "CANCELLED"
+            ) {
+
+                actions += `
+
+                    <button
+                        class="job-action-btn action-orange"
+                        onclick="cancelJob(
+                            ${job.id}
+                        )">
+
+                        Cancel
+
+                    </button>
+
+                `;
+
+            }
+
+
+
+            /* EDIT */
+
+            actions += `
+
+                <button
+                    class="job-action-btn action-blue"
+                    onclick="openEditJobModal(
+                        ${job.id}
+                    )">
+
+                    Edit
+
+                </button>
+
+            `;
+
+
+
+            /* DELETE */
+
+            actions += `
+
+                <button
+                    class="job-action-btn action-red"
+                    onclick="deleteJob(
+                        ${job.id}
+                    )">
+
+                    Delete
+
+                </button>
+
+            `;
+
+
+
+            /* BILL */
+
+            if (
+                job.jobStatus ===
+                "COMPLETED"
+                &&
+                !billedJobIds.has(
+                    job.id
+                )
+            ) {
+
+                actions += `
+
+                    <button
+                        class="job-action-btn action-green"
+                        onclick="generateBill(
+                            ${job.id}
+                        )">
+
+                        Bill
+
+                    </button>
+
+                `;
+
+            }
+
+
+
+            table.innerHTML += `
+
+                <tr>
+
+
+                    <td>
+
+                        <span class="id-pill">
+
+                            ${job.id}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+
+                            ${job.jobCardNumber}
+
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        ${vehicle}
+
+                    </td>
+
+
+                    <td>
+
+                        ${job.serviceDescription}
+
+                    </td>
+
+
+                    <td>
+
+                        ${bay}
+
+                    </td>
+
+
+                    <td>
+
+                        ${mechanic}
+
+                    </td>
+
+
+                    <td>
+
+                        ${statusBadge(
+                            job.jobStatus
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${qcBadge}
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="job-actions">
+
+                            ${actions}
+
+                        </div>
+
+                    </td>
+
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   ASSIGN MODAL
+========================================================= */
+
+function openAssignModal(
+    selectedJobId = null
+) {
+
+    updateAssignmentDropdowns(
+        selectedJobId
+    );
+
+
+    document.getElementById(
+        "assignResult"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "assignModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+
+/* =========================================================
+   UPDATE ASSIGNMENT DROPDOWNS
+========================================================= */
+
+function updateAssignmentDropdowns(
+    selectedJobId = null
+) {
+
+    const jobSelect =
+        document.getElementById(
+            "assignJob"
+        );
+
+
+    const baySelect =
+        document.getElementById(
+            "assignBay"
+        );
+
+
+    const mechanicSelect =
+        document.getElementById(
+            "assignMechanic"
+        );
+
+
+    if (
+        !jobSelect
+        ||
+        !baySelect
+        ||
+        !mechanicSelect
+    ) {
+
+        return;
+
+    }
+
+
+
+    /* JOBS */
+
+    jobSelect.innerHTML = `
+
+        <option value="">
+            Select job card
+        </option>
+
+    `;
+
+
+    jobCards
+        .filter(
+            job =>
+                job.jobStatus ===
+                "CREATED"
+        )
+        .forEach(
+            job => {
+
+                jobSelect.innerHTML += `
+
+                    <option
+                        value="${job.id}">
+
+                        ${job.jobCardNumber}
+                        -
+                        ${
+                            job.vehicle
+                                ? job.vehicle.registrationNumber
+                                : ""
+                        }
+
+                    </option>
+
+                `;
+
+            }
+        );
+
+
+    if (
+        selectedJobId !== null
+    ) {
+
+        jobSelect.value =
+            selectedJobId;
+
+    }
+
+
+
+    /* BAYS */
+
+    const availableBays =
+        bays.filter(
+            bay =>
+                !bay.occupied
+        );
+
+
+    baySelect.innerHTML = `
+
+        <option value="">
+            Select available bay
+        </option>
+
+    `;
+
+
+    availableBays.forEach(
+        bay => {
+
+            baySelect.innerHTML += `
+
+                <option
+                    value="${bay.id}">
+
+                    ${bay.bayNumber}
+                    -
+                    ${bay.bayType}
+
+                </option>
+
+            `;
+
+        }
+    );
+
+
+    if (
+        availableBays.length === 0
+    ) {
+
+        baySelect.innerHTML = `
+
+            <option value="">
+                No available bays
+            </option>
+
+        `;
+
+    }
+
+
+
+    /* MECHANICS */
+
+    const availableMechanics =
+        mechanics.filter(
+            mechanic =>
+                mechanic.available
+        );
+
+
+    mechanicSelect.innerHTML = `
+
+        <option value="">
+            Select available mechanic
+        </option>
+
+    `;
+
+
+    availableMechanics.forEach(
+        mechanic => {
+
+            mechanicSelect.innerHTML += `
+
+                <option
+                    value="${mechanic.id}">
+
+                    ${mechanic.name}
+                    -
+                    ${mechanic.specialization}
+
+                </option>
+
+            `;
+
+        }
+    );
+
+
+    if (
+        availableMechanics.length === 0
+    ) {
+
+        mechanicSelect.innerHTML = `
+
+            <option value="">
+                No available mechanics
+            </option>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SUBMIT ASSIGNMENT
+========================================================= */
+
+async function submitAssignment() {
+
+
+    const jobId =
+        document.getElementById(
+            "assignJob"
+        ).value;
+
+
+    const bayId =
+        document.getElementById(
+            "assignBay"
+        ).value;
+
+
+    const mechanicId =
+        document.getElementById(
+            "assignMechanic"
+        ).value;
+
+
+
+    if (
+        !jobId
+        ||
+        !bayId
+        ||
+        !mechanicId
+    ) {
+
+        showToast(
+            "Select a job, bay and mechanic",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const response =
+            await fetch(
+
+                `/api/jobcards/${jobId}/assign?bayId=${bayId}&mechanicId=${mechanicId}`,
+
+                {
+                    method:
+                        "POST"
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to assign job"
+            );
+
+        }
+
+
+        closeAssignModal();
+
+
+        showToast(
+            "Bay and mechanic assigned successfully",
+            "success"
+        );
+
+
+        await loadData();
+
+    }
+
+    catch(error) {
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   CLOSE ASSIGN MODAL
+========================================================= */
+
+function closeAssignModal() {
+
+    document.getElementById(
+        "assignModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+
+/* =========================================================
+   START JOB
+========================================================= */
+
+async function startJob(
+    id
+) {
+
+    await updateStatus(
+        id,
+        "IN_PROGRESS"
+    );
+
+}
+
+
+
+/* =========================================================
+   QUALITY CHECK
+========================================================= */
+
+async function qualityCheck(
+    id
+) {
+
+
+    if (
+        !confirm(
+            "Confirm that the quality check has passed?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                `/api/jobcards/${id}/quality-check`,
+                {
+                    method:
+                        "PUT"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Quality check failed"
+            );
+
+        }
+
+
+        showToast(
+            "Quality check completed successfully",
+            "success"
+        );
+
+
+        await loadData();
+
+    }
+
+    catch(error) {
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   COMPLETE JOB
+========================================================= */
+
+async function completeJob(
+    id
+) {
+
+    if (
+        !confirm(
+            "Complete this job?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    await updateStatus(
+        id,
+        "COMPLETED"
+    );
+
+}
+
+
+
+/* =========================================================
+   CANCEL JOB
+========================================================= */
+
+async function cancelJob(
+    id
+) {
+
+    if (
+        !confirm(
+            "Cancel this job?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    await updateStatus(
+        id,
+        "CANCELLED"
+    );
+
+}
+
+
+
+/* =========================================================
+   UPDATE STATUS
+========================================================= */
+
+async function updateStatus(
+    id,
+    status
+) {
+
+    try {
+
+
+        const response =
+            await fetch(
+
+                `/api/jobcards/${id}/status?status=${status}`,
+
+                {
+                    method:
+                        "PUT"
+                }
+
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to update status"
+            );
+
+        }
+
+
+        showToast(
+            `Job status changed to ${status.replaceAll("_"," ")}`,
+            "success"
+        );
+
+
+        await loadData();
+
+    }
+
+    catch(error) {
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   DELETE JOB
+========================================================= */
+
+async function deleteJob(
+    id
+) {
+
+
+    if (
+        !confirm(
+            "Delete this job card?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                `/api/jobcards/${id}`,
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+
+        let data = {};
+
+
+        try {
+
+            data =
+                await response.json();
+
+        }
+
+        catch(ignored) {
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to delete job card"
+            );
+
+        }
+
+
+        showToast(
+            "Job card deleted successfully",
+            "success"
+        );
+
+
+        await loadData();
+
+    }
+
+    catch(error) {
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   GENERATE BILL
+========================================================= */
+
+async function generateBill(
+    jobId
+) {
+
+    const job =
+        jobCards.find(
+            item =>
+                item.id === jobId
+        );
+
+
+    if (!job) {
+
+        return;
+
+    }
+
+
+    if (
+        !confirm(
+            `Generate bill for ${job.jobCardNumber}?`
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                `/api/bills/generate/${jobId}`,
+                {
+                    method:
+                        "POST"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to generate bill"
+            );
+
+        }
+
+
+        showToast(
+            `Bill generated: ${data.billNumber}`,
+            "success"
+        );
+
+
+        await loadData();
+
+    }
+
+    catch(error) {
+
+        showToast(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document.getElementById(
+    "jobSearch"
+).addEventListener(
+    "input",
+    function() {
+
+
+        const query =
+            this.value
+                .trim()
+                .toLowerCase();
+
+
+        const filtered =
+            jobCards.filter(
+                job => {
+
+
+                    const vehicle =
+                        job.vehicle
+                            ? job.vehicle.registrationNumber
+                            : "";
+
+
+                    const status =
+                        job.jobStatus
+                            ? job.jobStatus.toLowerCase()
+                            : "";
+
+
+                    return (
+
+                        String(
+                            job.id
+                        )
+                        .includes(
+                            query
+                        )
+
+                        ||
+
+                        job.jobCardNumber
+                            .toLowerCase()
+                            .includes(
+                                query
+                            )
+
+                        ||
+
+                        vehicle
+                            .toLowerCase()
+                            .includes(
+                                query
+                            )
+
+                        ||
+
+                        job.serviceDescription
+                            .toLowerCase()
+                            .includes(
+                                query
+                            )
+
+                        ||
+
+                        status.includes(
+                            query
+                        )
+
+                    );
+
+                }
+            );
+
+
+        renderJobCards(
+            filtered
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   MODAL BACKDROPS
+========================================================= */
+
+document.getElementById(
+    "jobModal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target ===
+            this
+        ) {
+
+            closeJobModal();
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "assignModal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target ===
+            this
+        ) {
+
+            closeAssignModal();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(
+    message,
+    type
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.style.position =
+        "fixed";
+
+
+    toast.style.right =
+        "25px";
+
+
+    toast.style.bottom =
+        "25px";
+
+
+    toast.style.padding =
+        "13px 18px";
+
+
+    toast.style.borderRadius =
+        "10px";
+
+
+    toast.style.color =
+        "white";
+
+
+    toast.style.fontSize =
+        "12px";
+
+
+    toast.style.fontWeight =
+        "700";
+
+
+    toast.style.zIndex =
+        "9999";
+
+
+    toast.style.boxShadow =
+        "0 12px 30px rgba(0,0,0,0.18)";
+
+
+    toast.style.background =
+        type === "success"
+
+            ?
+
+        "linear-gradient(135deg,#059669,#10b981)"
+
+            :
+
+        "linear-gradient(135deg,#dc2626,#ef4444)";
+
+
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        function() {
+
+            toast.style.display =
+                "none";
+
+        },
+        3000
+    );
+
+}
+
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadData();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

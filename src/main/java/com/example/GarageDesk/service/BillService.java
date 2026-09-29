@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.GarageDesk.entity.Bill;
 import com.example.GarageDesk.entity.JobCard;
+import com.example.GarageDesk.entity.JobStatus;
 import com.example.GarageDesk.repository.BillRepository;
 import com.example.GarageDesk.repository.JobCardRepository;
 
@@ -26,18 +27,29 @@ public class BillService {
         this.jobCardRepository = jobCardRepository;
     }
 
-    // Generate final bill from job card
+    // Generate final bill
     public Bill generateBill(Long jobCardId) {
 
         JobCard jobCard = jobCardRepository.findById(jobCardId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Job card not found"));
+                        "Job card not found"
+                ));
 
-        if (jobCard.getJobStatus().name().equals("CANCELLED")) {
+        // Bill can be generated only after completion
+        if (jobCard.getJobStatus() != JobStatus.COMPLETED) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "Cannot generate bill for cancelled job");
+                    "Bill can be generated only for a completed job"
+            );
+        }
+
+        // Prevent duplicate bill
+        if (billRepository.findByJobCardId(jobCardId).isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Bill already exists for this job card"
+            );
         }
 
         Bill bill = new Bill();
@@ -66,10 +78,12 @@ public class BillService {
 
     // Get bill by ID
     public Bill getById(Long id) {
+
         return billRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "Bill not found"));
+                        "Bill not found"
+                ));
     }
 
     // Delete bill
@@ -78,7 +92,8 @@ public class BillService {
         if (!billRepository.existsById(id)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "Bill not found");
+                    "Bill not found"
+            );
         }
 
         billRepository.deleteById(id);
